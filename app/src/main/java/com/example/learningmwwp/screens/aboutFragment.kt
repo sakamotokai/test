@@ -30,11 +30,13 @@ class aboutFragment : Fragment() {
     private var param2: String? = null
 
     companion object{
-        fun getNewInstance(args: String):aboutFragment{
+        fun getNewInstance(args: Bundle):aboutFragment{
             val fragment=aboutFragment()
-            val bundle=Bundle()
-            bundle.putString("text",args)
-            fragment.arguments = bundle
+            fragment.arguments?.apply {
+                getString("text")
+                getInt("position")
+            }
+            fragment.arguments = args
             return fragment
         }
     }
@@ -57,14 +59,10 @@ class aboutFragment : Fragment() {
             binding.aboutFragmentTextView.text = it
         })
         val i = activity as MainActivity
-        if(arguments?.isEmpty == true){
-            binding.fragmentAdd.setOnClickListener {
-                i.binding.mainText.text = "TRUE"
-                i.viewModel.setLiveData(arguments?.getString("text","JOJO").toString())
-
-            }
+        if(arguments?.getString("text")!!.isEmpty()){
+                //i.binding.mainText.text = "TRUE"
         } else{
-            i.binding.mainText.text = "FALSE"
+            i.binding.mainText.text = "True"
             binding.aboutFragmentTextView.text = arguments?.getString("text").toString()
         }
 

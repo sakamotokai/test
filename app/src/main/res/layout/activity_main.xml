@@ -24,6 +24,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="20dp"
+        android:background="@color/purple_500"
         android:id="@+id/mainAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

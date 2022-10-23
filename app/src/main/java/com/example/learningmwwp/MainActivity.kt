@@ -30,9 +30,13 @@ class MainActivity : AppCompatActivity() {
 
     fun clickListener() {
         binding.mainAdd.setOnClickListener {
-            aboutFragment.getNewInstance("text21312")
+            val bundle = Bundle()
+            bundle.apply {
+                putString("text","")
+                putInt("position",0)
+            }
             supportFragmentManager.beginTransaction().addToBackStack(null)
-                .replace(R.id.fragmentContainer, aboutFragment()).commit()
+                .replace(R.id.fragmentContainer, aboutFragment.getNewInstance(bundle)).commit()
         }
     }
 

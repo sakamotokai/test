@@ -56,12 +56,12 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
         val i = view.itemView.context as MainActivity
         view.itemView.setOnClickListener {
             i.binding.mainText.text = elementList[position]
-            var bundle = Bundle().putString("text",elementList[position])
-            val fragment = aboutFragment.getNewInstance(elementList[position])
-            //aboutFragment.getNewInstance(args = elementList[position])
+            val bundle = Bundle().apply {
+                putString("text",elementList[position])
+                putInt("position",position)
+            }
             replace.supportFragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer
-                ,fragment,"aboutFragment").commit()
-            //aboutFragment.getNewInstance(Bundle().putString("text",elementList[position]))
+                ,aboutFragment.getNewInstance(bundle),"aboutFragment").commit()
         }
     }
 }
