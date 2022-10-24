@@ -21,6 +21,11 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
         notifyDataSetChanged()
     }
 
+    fun insertData(data:String,position: Int){
+        elementList[position] = data
+        notifyDataSetChanged()
+    }
+
     //пока что делаем радикально, позже исправить
     fun addElement(elem:String){
         elementList.add(elem)

@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     fun recycler(viewModel: MainViewModel) {
         rec = binding.mainRecyclerView
-        recAdapter = MainRecyclerAdapter()
+        recAdapter = viewModel.recAdapter
         rec.adapter = recAdapter
         rec.layoutManager = GridLayoutManager(applicationContext, 2)
         recAdapter.addElement("first")

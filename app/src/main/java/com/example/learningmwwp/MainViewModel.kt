@@ -3,10 +3,19 @@ package com.example.learningmwwp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.learningmwwp.RecyclerAdapter.MainRecyclerAdapter
 
 class MainViewModel:ViewModel() {
     private var liveData = MutableLiveData<String>()
+    private var recyclerLiveData =MutableLiveData<List<String>>()
+    var pRecyclerLiveData = recyclerLiveData
     var pLiveData = liveData
+    val recAdapter = MainRecyclerAdapter()
+
+    fun setRecyclerLiveData(list:List<String>){
+        recAdapter.setData(list)
+    }
+
     fun setLiveData(data:String){
         liveData.value = data
     }

@@ -60,10 +60,14 @@ class aboutFragment : Fragment() {
         })
         val i = activity as MainActivity
         if(arguments?.getString("text")!!.isEmpty()){
-                //i.binding.mainText.text = "TRUE"
+                binding.fragmentAdd.setOnClickListener {
+                    i.recAdapter.addElement(binding.aboutFragmentEditText.text.toString())
+                }
         } else{
-            i.binding.mainText.text = "True"
             binding.aboutFragmentTextView.text = arguments?.getString("text").toString()
+            binding.fragmentAdd.setOnClickListener {
+                vm.setMainData(i,binding.aboutFragmentEditText.text.toString(),arguments?.getInt("position")!!.toInt())
+            }
         }
 
         return binding.root

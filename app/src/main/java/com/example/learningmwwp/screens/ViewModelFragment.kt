@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.learningmwwp.MainActivity
 import com.example.learningmwwp.MainViewModel
+import java.text.FieldPosition
 
 class ViewModelFragment:ViewModel() {
     private var liveData = MutableLiveData<String>()
@@ -17,7 +18,8 @@ class ViewModelFragment:ViewModel() {
         return pLiveData.value.toString()
     }
 
-    fun setMainData(){
-        MainViewModel().setOwerData(liveData.value.toString())
+    fun setMainData(activity: MainActivity,data:String,position: Int){
+        val i = activity
+        i.recAdapter.insertData(data,position)
     }
 }
