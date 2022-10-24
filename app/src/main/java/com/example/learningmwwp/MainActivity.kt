@@ -20,11 +20,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        rec = binding.mainRecyclerView
         recycler(viewModel)
         clickListener()
         viewModel.pLiveData.observe(this, Observer {
-            binding.mainText.text = it
-            recAdapter.addElement(it)
+            viewModel.pRecAdapter.addElement(it)
         })
     }
 
@@ -39,14 +39,11 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.fragmentContainer, aboutFragment.getNewInstance(bundle)).commit()
         }
     }
-
+//Создание recyclerView
     fun recycler(viewModel: MainViewModel) {
-        rec = binding.mainRecyclerView
-        recAdapter = viewModel.recAdapter
+        recAdapter = viewModel.pRecAdapter
         rec.adapter = recAdapter
         rec.layoutManager = GridLayoutManager(applicationContext, 2)
-        recAdapter.addElement("first")
-        recAdapter.addElement("second")
-        recAdapter.addElement("thread")
+    if(viewModel.pRecAdapter.getElementCount() == 0) viewModel.setDefaultRecyclerLiveData()
     }
 }

@@ -21,6 +21,10 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
         notifyDataSetChanged()
     }
 
+    fun getElementCount():Int{
+        return elementList.count()
+    }
+
     fun insertData(data:String,position: Int){
         elementList[position] = data
         notifyDataSetChanged()
@@ -60,7 +64,6 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
         val replace = view.itemView.context as AppCompatActivity
         val i = view.itemView.context as MainActivity
         view.itemView.setOnClickListener {
-            i.binding.mainText.text = elementList[position]
             val bundle = Bundle().apply {
                 putString("text",elementList[position])
                 putInt("position",position)
