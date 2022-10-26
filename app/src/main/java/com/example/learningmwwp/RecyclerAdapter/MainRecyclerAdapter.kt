@@ -58,6 +58,7 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
             checker = true
             val bundle = Bundle().apply {
                 putString("text", elementList[position].text)
+                putInt("key",elementList[position].id)
             }
             replace.supportFragmentManager.beginTransaction().addToBackStack(null).replace(
                 R.id.fragmentContainer, aboutFragment.setBundle(bundle), "aboutFragment"

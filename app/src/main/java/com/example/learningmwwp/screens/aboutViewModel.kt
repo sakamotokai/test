@@ -22,10 +22,15 @@ class aboutViewModel:ViewModel() {
         }
     }
 
-    fun showDescription(binding: FragmentAboutBinding,bundle: Bundle?){
+    fun showDescription(modeldb: Modeldb,binding: FragmentAboutBinding,bundle: Bundle?){
         if(checker){
             val description = bundle!!.getString("text","Test Value")
             binding.aboutFragmentTextView.text = description
+            binding.fragmentDeleteBtn.setOnClickListener {
+                viewModelScope.launch(Dispatchers.IO) {
+                    RepositoryRealization(globalDao).delete(modeldb)
+                }
+            }
         }
     }
 
