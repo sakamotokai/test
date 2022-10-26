@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.learningmwwp.MainActivity
 import com.example.learningmwwp.db.Modeldb
 import com.example.learningmwwp.db.RepositoryRealization
+import com.example.learningmwwp.globalDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,12 +24,11 @@ class aboutViewModel:ViewModel() {
 
     fun addElement(modeldb: Modeldb){
         viewModelScope.launch(Dispatchers.IO) {
-            RepositoryRealization().insert(modeldb)
+            RepositoryRealization(globalDao).insert(modeldb)
         }
     }
 
-    fun setMainData(activity: MainActivity,data:String,position: Int){
-        val i = activity
-        i.recAdapter.insertData(data,position)
+    fun setMainData(){
+
     }
 }

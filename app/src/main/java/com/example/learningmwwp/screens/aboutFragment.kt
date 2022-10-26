@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.learningmwwp.MainActivity
 import com.example.learningmwwp.databinding.FragmentAboutBinding
+import com.example.learningmwwp.db.Modeldb
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,15 +58,8 @@ class aboutFragment : Fragment() {
             binding.aboutFragmentTextView.text = it
         })
         val i = activity as MainActivity
-        if(arguments?.getString("text")!!.isEmpty()){
-                binding.fragmentAdd.setOnClickListener {
-                    i.recAdapter.addElement(binding.aboutFragmentEditText.text.toString())
-                }
-        } else{
-            binding.aboutFragmentTextView.text = arguments?.getString("text").toString()
-            binding.fragmentAdd.setOnClickListener {
-                vm.setMainData(i,binding.aboutFragmentEditText.text.toString(),arguments?.getInt("position")!!.toInt())
-            }
+        binding.fragmentAdd.setOnClickListener {
+            vm.addElement(Modeldb(text = binding.aboutFragmentEditText.text.toString()))
         }
 
         return binding.root

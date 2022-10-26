@@ -9,37 +9,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.learningmwwp.MainActivity
 import com.example.learningmwwp.R
+import com.example.learningmwwp.db.Modeldb
 import com.example.learningmwwp.screens.aboutFragment
 import java.util.LinkedList
 
 class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>() {
-    private val elementList: MutableList<String> = LinkedList()
-
-    fun setData(element: List<String>) {
-        elementList.clear()
-        elementList.addAll(element)
-        notifyDataSetChanged()
-    }
+    private val elementList: MutableList<Modeldb> = LinkedList()
 
     fun getElementCount():Int{
         return elementList.count()
     }
 
-    fun insertData(data:String,position: Int){
-        elementList[position] = data
-        notifyDataSetChanged()
-    }
-
-    //пока что делаем радикально, позже исправить
-    fun addElement(elem:String){
-        elementList.add(elem)
+    fun setList(list:List<Modeldb>){
+        elementList.clear()
+        elementList.addAll(list)
         notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val text = itemView.findViewById<TextView>(R.id.recyclerTextView)
-        fun bind(elem: String) {
-            text.text = elem
+        fun bind(elem: Modeldb) {
+            text.text = elem.text
         }
     }
 
@@ -65,8 +55,6 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
         val i = view.itemView.context as MainActivity
         view.itemView.setOnClickListener {
             val bundle = Bundle().apply {
-                putString("text",elementList[position])
-                putInt("position",position)
             }
             replace.supportFragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer
                 ,aboutFragment.getNewInstance(bundle),"aboutFragment").commit()

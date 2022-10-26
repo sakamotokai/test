@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.learningmwwp.RecyclerAdapter.MainRecyclerAdapter
 import com.example.learningmwwp.databinding.ActivityMainBinding
+import com.example.learningmwwp.db.RepositoryRealization
 import com.example.learningmwwp.screens.aboutFragment
 
 class MainActivity : AppCompatActivity() {
@@ -20,12 +21,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        globalDao = viewModel.initDatabase(application = application)
         rec = binding.mainRecyclerView
         recycler(viewModel)
         clickListener()
-        viewModel.pLiveData.observe(this, Observer {
-            viewModel.pRecAdapter.addElement(it)
+        RepositoryRealization(globalDao).allModelsbd.observe(this, Observer {
+            viewModel.setRecyclerData(recAdapter,it)
         })
+        /*viewModel.pLiveData.observe(this, Observer {
+            viewModel.pRecAdapter.addElement(it)
+        })*/
     }
     
 
@@ -33,8 +38,7 @@ class MainActivity : AppCompatActivity() {
         binding.mainAdd.setOnClickListener {
             val bundle = Bundle()
             bundle.apply {
-                putString("text","")
-                putInt("position",0)
+
             }
             supportFragmentManager.beginTransaction().addToBackStack(null)
                 .replace(R.id.fragmentContainer, aboutFragment.getNewInstance(bundle)).commit()
@@ -45,6 +49,5 @@ class MainActivity : AppCompatActivity() {
         recAdapter = viewModel.pRecAdapter
         rec.adapter = recAdapter
         rec.layoutManager = GridLayoutManager(applicationContext, 2)
-    if(viewModel.pRecAdapter.getElementCount() == 0) viewModel.setDefaultRecyclerLiveData()
     }
 }
