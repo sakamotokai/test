@@ -1,11 +1,13 @@
 package com.example.learningmwwp.screens
 
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.learningmwwp.MainActivity
 import com.example.learningmwwp.RecyclerAdapter.MainRecyclerAdapter
 import com.example.learningmwwp.checker
+import com.example.learningmwwp.databinding.FragmentAboutBinding
 import com.example.learningmwwp.db.Modeldb
 import com.example.learningmwwp.db.RepositoryRealization
 import com.example.learningmwwp.globalDao
@@ -20,7 +22,14 @@ class aboutViewModel:ViewModel() {
         }
     }
 
-    fun addLogic(modeldb: Modeldb){
+    fun showDescription(binding: FragmentAboutBinding,bundle: Bundle?){
+        if(checker){
+            val description = bundle!!.getString("text","Test Value")
+            binding.aboutFragmentTextView.text = description
+        }
+    }
+
+    fun addLogic(modeldb: Modeldb,binding: FragmentAboutBinding,bundle: Bundle?){
         if(checker){
             checker = false
         }

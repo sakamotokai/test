@@ -17,7 +17,7 @@ import java.util.LinkedList
 class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>() {
     private val elementList: MutableList<Modeldb> = LinkedList()
 
-    fun setList(list:List<Modeldb>){
+    fun setList(list: List<Modeldb>) {
         elementList.clear()
         elementList.addAll(list)
         notifyDataSetChanged()
@@ -39,7 +39,7 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        setListener(holder,position)
+        setListener(holder, position)
         holder.bind(elementList[position])
     }
 
@@ -47,17 +47,21 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
         return elementList.count()
     }
 
-    fun getModeldb():Modeldb{
+    fun getModeldb(): Modeldb {
         return elementList[itemCount]
     }
 
-    fun setListener(view:ViewHolder,position: Int){
+    fun setListener(view: ViewHolder, position: Int) {
         val replace = view.itemView.context as AppCompatActivity
         //val i = view.itemView.context as MainActivity
         view.itemView.setOnClickListener {
             checker = true
-            replace.supportFragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer
-                ,aboutFragment(),"aboutFragment").commit()
+            val bundle = Bundle().apply {
+                putString("text", elementList[position].text)
+            }
+            replace.supportFragmentManager.beginTransaction().addToBackStack(null).replace(
+                R.id.fragmentContainer, aboutFragment.setBundle(bundle), "aboutFragment"
+            ).commit()
         }
     }
 }
