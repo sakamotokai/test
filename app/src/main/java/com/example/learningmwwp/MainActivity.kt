@@ -12,8 +12,8 @@ import com.example.learningmwwp.db.RepositoryRealization
 import com.example.learningmwwp.screens.aboutFragment
 
 class MainActivity : AppCompatActivity() {
-    lateinit var rec :RecyclerView
-    lateinit var recAdapter:MainRecyclerAdapter
+    lateinit var rec: RecyclerView
+    lateinit var recAdapter: MainRecyclerAdapter
     lateinit var binding: ActivityMainBinding
     lateinit var viewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,31 +22,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         globalDao = viewModel.initDatabase(application = application)
-        rec = binding.mainRecyclerView
-        recycler(viewModel)
+        recycler(binding)
         clickListener()
         RepositoryRealization(globalDao).allModelsbd.observe(this, Observer {
-            viewModel.setRecyclerData(recAdapter,it)
+            viewModel.setRecyclerData(recAdapter, it)
         })
-        /*viewModel.pLiveData.observe(this, Observer {
-            viewModel.pRecAdapter.addElement(it)
-        })*/
     }
-    
+
 
     fun clickListener() {
         binding.mainAdd.setOnClickListener {
-            val bundle = Bundle()
-            bundle.apply {
-
-            }
             supportFragmentManager.beginTransaction().addToBackStack(null)
-                .replace(R.id.fragmentContainer, aboutFragment.getNewInstance(bundle)).commit()
+                .replace(R.id.fragmentContainer, aboutFragment()).commit()
         }
     }
-//Создание recyclerView
-    fun recycler(viewModel: MainViewModel) {
-        recAdapter = viewModel.pRecAdapter
+
+    //Создание recyclerView
+    fun recycler(binding: ActivityMainBinding) {
+        rec = binding.mainRecyclerView
+        recAdapter = MainRecyclerAdapter()
         rec.adapter = recAdapter
         rec.layoutManager = GridLayoutManager(applicationContext, 2)
     }

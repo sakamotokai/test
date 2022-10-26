@@ -9,16 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.learningmwwp.MainActivity
 import com.example.learningmwwp.R
+import com.example.learningmwwp.checker
 import com.example.learningmwwp.db.Modeldb
 import com.example.learningmwwp.screens.aboutFragment
 import java.util.LinkedList
 
 class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>() {
     private val elementList: MutableList<Modeldb> = LinkedList()
-
-    fun getElementCount():Int{
-        return elementList.count()
-    }
 
     fun setList(list:List<Modeldb>){
         elementList.clear()
@@ -50,14 +47,17 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
         return elementList.count()
     }
 
+    fun getModeldb():Modeldb{
+        return elementList[itemCount]
+    }
+
     fun setListener(view:ViewHolder,position: Int){
         val replace = view.itemView.context as AppCompatActivity
-        val i = view.itemView.context as MainActivity
+        //val i = view.itemView.context as MainActivity
         view.itemView.setOnClickListener {
-            val bundle = Bundle().apply {
-            }
+            checker = true
             replace.supportFragmentManager.beginTransaction().addToBackStack(null).replace(R.id.fragmentContainer
-                ,aboutFragment.getNewInstance(bundle),"aboutFragment").commit()
+                ,aboutFragment(),"aboutFragment").commit()
         }
     }
 }
