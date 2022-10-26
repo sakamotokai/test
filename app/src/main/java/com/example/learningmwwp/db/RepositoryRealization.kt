@@ -13,4 +13,8 @@ class RepositoryRealization(private var daodb: Daodb):Repository {
     override suspend fun delete(modeldb: Modeldb) {
         daodb.delete(modeldb)
     }
+
+    override suspend fun update(modeldb: Modeldb) {
+        daodb.update(modeldb)
+    }
 }

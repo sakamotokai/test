@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface Daodb {
@@ -12,6 +13,8 @@ interface Daodb {
     suspend fun insert(modeldb: Modeldb)
     @Delete
     suspend fun delete(modeldb: Modeldb)
+    @Update
+    suspend fun update(modeldb: Modeldb)
     @Query("SELECT*FROM note")
     fun getAllModelsdb():LiveData<List<Modeldb>>
 }

@@ -1,5 +1,6 @@
 package com.example.learningmwwp.RecyclerAdapter
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,12 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
     fun setList(list: List<Modeldb>) {
         elementList.clear()
         elementList.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun changeList(modeldb: Modeldb){
+        elementList[modeldb.id-1] = modeldb
         notifyDataSetChanged()
     }
 

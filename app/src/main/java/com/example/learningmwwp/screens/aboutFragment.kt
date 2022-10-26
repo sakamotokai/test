@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.learningmwwp.MainActivity
+import com.example.learningmwwp.RecyclerAdapter.MainRecyclerAdapter
 import com.example.learningmwwp.checker
 import com.example.learningmwwp.databinding.FragmentAboutBinding
 import com.example.learningmwwp.db.Modeldb
@@ -28,26 +29,22 @@ class aboutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        var mainActivity = activity as MainActivity
         viewModel = ViewModelProvider(this).get(aboutViewModel::class.java)
         binding = FragmentAboutBinding.inflate(layoutInflater, container, false)
-        if(checker){viewModel.showDescription(
-            Modeldb(
-                text = arguments?.getString("text",)!!,
-                id = arguments?.getInt("key",)!!
-            ), binding, arguments
-        )}
-        binding.fragmentAdd.setOnClickListener {
-            viewModel.addLogic(
-                Modeldb(text = binding.aboutFragmentEditText.text.toString()),
-                binding,
-                arguments
+        if (arguments?.getString("text") != null) {
+            viewModel.showDescription(
+                Modeldb(
+                    text = arguments?.getString("text")!!,
+                    id = arguments?.getInt("key")!!
+                ), binding, arguments
             )
         }
+        binding.fragmentAdd.setOnClickListener {
+            viewModel.addLogic(
+                Modeldb(id = viewModel.elementId(arguments),text = binding.aboutFragmentEditText.text.toString()),
+                binding,arguments,mainActivity.recAdapter)
+        }
         return binding.root
-    }
-
-    override fun onDestroy() {
-        checker = false
-        super.onDestroy()
     }
 }
