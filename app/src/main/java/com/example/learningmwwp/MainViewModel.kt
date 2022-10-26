@@ -1,9 +1,12 @@
 package com.example.learningmwwp
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.learningmwwp.RecyclerAdapter.MainRecyclerAdapter
+import com.example.learningmwwp.db.Daodb
+import com.example.learningmwwp.db.Database
 
 class MainViewModel:ViewModel() {
     private var liveData = MutableLiveData<String>()
@@ -15,6 +18,10 @@ class MainViewModel:ViewModel() {
 
     fun setRecyclerLiveData(list:List<String>){
         recAdapter.setData(list)
+    }
+
+    fun initDatabase(application: Application){
+        val dao = Database.getInstance(application).getDao()
     }
 
     fun setDefaultRecyclerLiveData():MainRecyclerAdapter{

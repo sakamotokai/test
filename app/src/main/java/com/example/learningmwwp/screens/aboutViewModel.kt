@@ -1,13 +1,15 @@
 package com.example.learningmwwp.screens
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.learningmwwp.MainActivity
-import com.example.learningmwwp.MainViewModel
-import java.text.FieldPosition
+import com.example.learningmwwp.db.Modeldb
+import com.example.learningmwwp.db.RepositoryRealization
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class ViewModelFragment:ViewModel() {
+class aboutViewModel:ViewModel() {
     private var liveData = MutableLiveData<String>()
     var pLiveData = liveData
     fun setData(data:String){
@@ -16,6 +18,13 @@ class ViewModelFragment:ViewModel() {
 
     fun putData():String{
         return pLiveData.value.toString()
+    }
+
+
+    fun addElement(modeldb: Modeldb){
+        viewModelScope.launch(Dispatchers.IO) {
+            RepositoryRealization().insert(modeldb)
+        }
     }
 
     fun setMainData(activity: MainActivity,data:String,position: Int){

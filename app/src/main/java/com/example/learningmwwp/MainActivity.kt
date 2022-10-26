@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
             viewModel.pRecAdapter.addElement(it)
         })
     }
+    
 
     fun clickListener() {
         binding.mainAdd.setOnClickListener {

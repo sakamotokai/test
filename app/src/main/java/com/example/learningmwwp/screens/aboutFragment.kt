@@ -1,12 +1,10 @@
 package com.example.learningmwwp.screens
 
 import android.os.Bundle
-import android.text.Editable
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.set
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.learningmwwp.MainActivity
@@ -24,7 +22,7 @@ private const val ARG_PARAM2 = "param2"
  */
 class aboutFragment : Fragment() {
     lateinit var binding: FragmentAboutBinding
-    lateinit var vm:ViewModelFragment
+    lateinit var vm:aboutViewModel
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -53,7 +51,7 @@ class aboutFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        vm = ViewModelProvider(this).get(ViewModelFragment::class.java)
+        vm = ViewModelProvider(this).get(aboutViewModel::class.java)
         binding = FragmentAboutBinding.inflate(layoutInflater,container,false)
         vm.pLiveData.observe(viewLifecycleOwner, Observer {
             binding.aboutFragmentTextView.text = it
