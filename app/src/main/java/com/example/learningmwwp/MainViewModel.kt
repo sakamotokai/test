@@ -9,13 +9,13 @@ import com.example.learningmwwp.db.Daodb
 import com.example.learningmwwp.db.Database
 import com.example.learningmwwp.db.Modeldb
 
-class MainViewModel:ViewModel() {
+class MainViewModel : ViewModel() {
 
-    fun initDatabase(application: Application):Daodb{
+    fun initDatabase(application: Application): Daodb {
         return Database.getInstance(application).getDao()
     }
 
-    fun setRecyclerData(adapter:MainRecyclerAdapter,list:List<Modeldb>){
+    fun setRecyclerData(adapter: MainRecyclerAdapter, list: List<Modeldb>) {
         adapter.setList(list)
     }
 }
