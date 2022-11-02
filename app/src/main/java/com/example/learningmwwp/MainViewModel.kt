@@ -1,9 +1,7 @@
 package com.example.learningmwwp
 
 import android.app.Application
-import android.widget.TextView
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.widget.EditText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.learningmwwp.RecyclerAdapter.MainRecyclerAdapter
@@ -13,7 +11,6 @@ import com.example.learningmwwp.db.Modeldb
 import com.example.learningmwwp.db.RepositoryRealization
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
@@ -34,6 +31,6 @@ class MainViewModel : ViewModel() {
                 )
             )
         }
-        dialog.findViewById<TextView>(R.id.aboutFragmentTextView)!!.text = text
+        dialog.findViewById<EditText>(R.id.aboutFragmentEditText)!!.setText(text)
     }
 }

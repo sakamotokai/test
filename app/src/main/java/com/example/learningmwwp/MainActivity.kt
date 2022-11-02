@@ -2,7 +2,6 @@ package com.example.learningmwwp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.EditText
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -11,14 +10,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.learningmwwp.RecyclerAdapter.MainRecyclerAdapter
 import com.example.learningmwwp.databinding.ActivityMainBinding
-import com.example.learningmwwp.db.Modeldb
 import com.example.learningmwwp.db.RepositoryRealization
-import com.example.learningmwwp.screens.aboutFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     lateinit var rec: RecyclerView
@@ -41,14 +35,6 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-
-    /*fun clickListener() {
-        binding.mainAdd.setOnClickListener {
-            supportFragmentManager.beginTransaction().addToBackStack(null)
-                .replace(R.id.fragmentContainer, aboutFragment()).commit()
-        }
-    }*/
-
     fun clickListener() {
         val dialog = BottomSheetDialog(this)
         dialog.setContentView(R.layout.fragment_about)
@@ -63,12 +49,6 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    fun click(): FloatingActionButton {
-        val dialog = BottomSheetDialog(this)
-        return dialog.findViewById<FloatingActionButton>(R.id.aboutAdd)!!
-    }
-
-    //Создание recyclerView
     fun recycler(binding: ActivityMainBinding) {
         rec = binding.mainRecyclerView
         recAdapter = MainRecyclerAdapter()
