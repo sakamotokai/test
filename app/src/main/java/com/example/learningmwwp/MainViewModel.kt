@@ -1,13 +1,20 @@
 package com.example.learningmwwp
 
 import android.app.Application
+import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.learningmwwp.RecyclerAdapter.MainRecyclerAdapter
 import com.example.learningmwwp.db.Daodb
 import com.example.learningmwwp.db.Database
 import com.example.learningmwwp.db.Modeldb
+import com.example.learningmwwp.db.RepositoryRealization
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
@@ -17,5 +24,16 @@ class MainViewModel : ViewModel() {
 
     fun setRecyclerData(adapter: MainRecyclerAdapter, list: List<Modeldb>) {
         adapter.setList(list)
+    }
+
+    fun addElement(text:String,dialog: BottomSheetDialog){
+        viewModelScope.launch(Dispatchers.IO) {
+            RepositoryRealization(globalDao).insert(
+                Modeldb(
+                    text = text
+                )
+            )
+        }
+        dialog.findViewById<TextView>(R.id.aboutFragmentTextView)!!.text = text
     }
 }

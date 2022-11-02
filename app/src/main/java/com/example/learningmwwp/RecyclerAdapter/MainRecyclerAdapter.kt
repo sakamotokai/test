@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -12,7 +13,14 @@ import com.example.learningmwwp.MainActivity
 import com.example.learningmwwp.R
 import com.example.learningmwwp.checker
 import com.example.learningmwwp.db.Modeldb
+import com.example.learningmwwp.db.RepositoryRealization
+import com.example.learningmwwp.globalDao
 import com.example.learningmwwp.screens.aboutFragment
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.util.LinkedList
 
 class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>() {
@@ -24,9 +32,15 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
         notifyDataSetChanged()
     }
 
+    fun addItem(text: String) {
+        MainScope().launch(Dispatchers.IO) {
+            RepositoryRealization(globalDao).insert(Modeldb(id = elementList.count(), text = text))
+        }
+    }
+
     @SuppressLint("NotifyDataSetChanged")
-    fun changeList(modeldb: Modeldb){
-        elementList[modeldb.id-1] = modeldb
+    fun changeList(modeldb: Modeldb) {
+        elementList[modeldb.id - 1] = modeldb
         notifyDataSetChanged()
     }
 
@@ -59,17 +73,37 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
     }
 
     fun setListener(view: ViewHolder, position: Int) {
-        val replace = view.itemView.context as AppCompatActivity
-        //val i = view.itemView.context as MainActivity
         view.itemView.setOnClickListener {
-            checker = true
-            val bundle = Bundle().apply {
-                putString("text", elementList[position].text)
-                putInt("key",elementList[position].id)
+            val dialog = BottomSheetDialog(view.itemView.context)
+            dialog.setContentView(R.layout.fragment_about)
+            val addBtn = dialog.findViewById<FloatingActionButton>(R.id.aboutAdd)
+            val editText = dialog.findViewById<EditText>(R.id.aboutFragmentEditText)
+            val deleteBtn = dialog.findViewById<FloatingActionButton>(R.id.aboutDelete)
+            val textView = dialog.findViewById<TextView>(R.id.aboutFragmentTextView)
+            textView!!.text = elementList[position].text
+            addBtn!!.setOnClickListener {
+                MainScope().launch(Dispatchers.IO) {
+                    RepositoryRealization(globalDao).update(
+                        Modeldb(
+                            id = elementList[position].id,
+                            text = editText!!.text.toString()
+                        )
+                    )
+                }
+                textView.text = editText!!.text.toString()
             }
-            replace.supportFragmentManager.beginTransaction().addToBackStack(null).replace(
-                R.id.fragmentContainer, aboutFragment.setBundle(bundle), "aboutFragment"
-            ).commit()
+            deleteBtn!!.setOnClickListener {
+                MainScope().launch(Dispatchers.IO) {
+                    RepositoryRealization(globalDao).delete(
+                        Modeldb(
+                            id = elementList[position].id,
+                            text = elementList[position].text
+                        )
+                    )
+                }
+                dialog.hide()
+            }
+            dialog.show()
         }
     }
 }
