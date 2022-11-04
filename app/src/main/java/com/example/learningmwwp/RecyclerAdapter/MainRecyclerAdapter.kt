@@ -21,6 +21,7 @@ import java.util.LinkedList
 class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>() {
     private val elementList: MutableList<Modeldb> = LinkedList()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setList(list: List<Modeldb>) {
         elementList.clear()
         elementList.addAll(list)
@@ -57,6 +58,10 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
         return elementList.count()
     }
 
+    fun getFirstId():Int{
+        return elementList[0].id
+    }
+
     fun setListener(view: ViewHolder, position: Int) {
         view.itemView.setOnClickListener {
             val dialog = BottomSheetDialog(view.itemView.context)
@@ -70,7 +75,7 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
                     RepositoryRealization(globalDao).update(
                         Modeldb(
                             id = elementList[position].id,
-                            text = editText!!.text.toString()
+                            text = editText.text.toString()
                         )
                     )
                 }

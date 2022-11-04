@@ -1,15 +1,18 @@
 package com.example.learningmwwp
 
 import android.app.Application
-import android.widget.EditText
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.learningmwwp.RecyclerAdapter.MainRecyclerAdapter
 import com.example.learningmwwp.db.Daodb
 import com.example.learningmwwp.db.Database
 import com.example.learningmwwp.db.Modeldb
 import com.example.learningmwwp.db.RepositoryRealization
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,7 +26,25 @@ class MainViewModel : ViewModel() {
         adapter.setList(list)
     }
 
-    fun addElement(text:String,dialog: BottomSheetDialog){
+    fun changeLayoutManager(rec:RecyclerView,context: Context){
+        if(rec.layoutManager == mainRecyclerLayoutManager) {
+            rec.layoutManager = LinearLayoutManager(context)
+        }
+        else {
+            mainRecyclerLayoutManager = GridLayoutManager(context,2)
+            rec.layoutManager = mainRecyclerLayoutManager
+        }
+    }
+
+    fun initSharedPreferences(mainActivity: MainActivity){
+        val preferences = mainActivity.getSharedPreferences("settings",Context.MODE_PRIVATE)
+    }
+
+    fun getSharedData(key:String){
+
+    }
+
+    fun addElement(text:String){
         viewModelScope.launch(Dispatchers.IO) {
             RepositoryRealization(globalDao).insert(
                 Modeldb(
@@ -31,6 +52,10 @@ class MainViewModel : ViewModel() {
                 )
             )
         }
-        dialog.findViewById<EditText>(R.id.aboutFragmentEditText)!!.setText(text)
+    }
+    fun updateElement(text:String,position:Int){
+        viewModelScope.launch(Dispatchers.IO) {
+            RepositoryRealization(globalDao).update(Modeldb(id = position,text = text ))
+        }
     }
 }
