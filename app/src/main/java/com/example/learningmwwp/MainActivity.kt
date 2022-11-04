@@ -30,12 +30,12 @@ class MainActivity : AppCompatActivity() {
     lateinit var recAdapter: MainRecyclerAdapter
     lateinit var binding: ActivityMainBinding
     lateinit var viewModel: MainViewModel
-    lateinit var sharedPreferences:SharedPreferences
+    lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        sharedPreferences = getSharedPreferences("settings",Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences("mainRecyclerLayoutMode", 0)
         val toolbar = binding.mainToolbar
         setSupportActionBar(toolbar)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
@@ -58,13 +58,15 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.mainMenuChangeGrig -> {
-                viewModel.changeLayoutManager(rec, applicationContext)
+                viewModel.changeLayoutManager(rec, sharedPreferences)
+                viewModel.setLayoutManagerMode(sharedPreferences, rec)
             }
         }
         return true
     }
 
     fun clickListener() {
+        Log.e("logError", "click")
         val dialog = BottomSheetDialog(this)
         dialog.setContentView(R.layout.fragment_about)
         val addBtn = dialog.findViewById<FloatingActionButton>(R.id.aboutAdd)
@@ -77,7 +79,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.addElement(editText.text.toString())
                 buffer = editText.text.toString()
             } else {
-                viewModel.updateElement(editText.text.toString(),recAdapter.getFirstId())
+                viewModel.updateElement(editText.text.toString(), recAdapter.getFirstId())
             }
         }
         dialog.show()
@@ -87,8 +89,6 @@ class MainActivity : AppCompatActivity() {
         rec = binding.mainRecyclerView
         recAdapter = MainRecyclerAdapter()
         rec.adapter = recAdapter
-        mainRecyclerLayoutManager = GridLayoutManager(applicationContext, 2)
-        //sharedPreferences.edit().putInt("Settings",layoutManagerMode.GRID.ordinal)
-        rec.layoutManager = mainRecyclerLayoutManager
+        viewModel.setLayoutManagerMode(sharedPreferences, rec)
     }
 }

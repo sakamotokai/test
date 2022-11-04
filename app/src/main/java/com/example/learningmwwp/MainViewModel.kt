@@ -26,25 +26,37 @@ class MainViewModel : ViewModel() {
         adapter.setList(list)
     }
 
-    fun changeLayoutManager(rec:RecyclerView,context: Context){
-        if(rec.layoutManager == mainRecyclerLayoutManager) {
-            rec.layoutManager = LinearLayoutManager(context)
+    fun setLayoutManagerMode(sharedPreferences: SharedPreferences, recycler: RecyclerView) {
+        val value = sharedPreferences.getInt("mainRecyclerLayoutMode", 50)//50==Error
+        if (value == 50 || value == layoutManagerMode.GRID.ordinal) {
+            sharedPreferences.edit()
+                .putInt("mainRecyclerLayoutMode", layoutManagerMode.GRID.ordinal).apply()
+            recycler.layoutManager = GridLayoutManager(recycler.context, 2)
+        } else {
+            sharedPreferences.edit()
+                .putInt("mainRecyclerLayoutMode", layoutManagerMode.LINEAR.ordinal).apply()
+            recycler.layoutManager = LinearLayoutManager(recycler.context)
         }
-        else {
-            mainRecyclerLayoutManager = GridLayoutManager(context,2)
-            rec.layoutManager = mainRecyclerLayoutManager
+    }
+
+    fun changeLayoutManager(rec: RecyclerView, sharedPreferences: SharedPreferences) {
+        if (layoutManagerMode.GRID.ordinal == sharedPreferences.getInt(
+                "mainRecyclerLayoutMode",
+                0
+            )
+        ) {
+            rec.layoutManager = LinearLayoutManager(rec.context)
+            sharedPreferences.edit()
+                .putInt("mainRecyclerLayoutMode", layoutManagerMode.LINEAR.ordinal).apply()
+        } else {
+            //mainRecyclerLayoutManager = GridLayoutManager(context,2)
+            rec.layoutManager = GridLayoutManager(rec.context, 2)
+            sharedPreferences.edit()
+                .putInt("mainRecyclerLayoutMode", layoutManagerMode.GRID.ordinal).apply()
         }
     }
 
-    fun initSharedPreferences(mainActivity: MainActivity){
-        val preferences = mainActivity.getSharedPreferences("settings",Context.MODE_PRIVATE)
-    }
-
-    fun getSharedData(key:String){
-
-    }
-
-    fun addElement(text:String){
+    fun addElement(text: String) {
         viewModelScope.launch(Dispatchers.IO) {
             RepositoryRealization(globalDao).insert(
                 Modeldb(
@@ -53,9 +65,10 @@ class MainViewModel : ViewModel() {
             )
         }
     }
-    fun updateElement(text:String,position:Int){
+
+    fun updateElement(text: String, position: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            RepositoryRealization(globalDao).update(Modeldb(id = position,text = text ))
+            RepositoryRealization(globalDao).update(Modeldb(id = position, text = text))
         }
     }
 }
