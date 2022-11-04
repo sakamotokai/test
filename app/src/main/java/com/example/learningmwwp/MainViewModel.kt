@@ -3,6 +3,10 @@ package com.example.learningmwwp
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
@@ -13,6 +17,7 @@ import com.example.learningmwwp.db.Daodb
 import com.example.learningmwwp.db.Database
 import com.example.learningmwwp.db.Modeldb
 import com.example.learningmwwp.db.RepositoryRealization
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -66,9 +71,32 @@ class MainViewModel : ViewModel() {
         }
     }
 
+    fun addNewNote(
+        editText: EditText,
+        recAdapter: MainRecyclerAdapter,
+        deleteBtn: FloatingActionButton
+    ) {
+        var checker = false
+        if (editText.text.toString().isEmpty())
+            Toast.makeText(editText.context, "Введите текст", Toast.LENGTH_SHORT).show()
+        else if (!editText.text.toString().isEmpty() && checker)
+            updateElement(editText.text.toString(), recAdapter.getFirstId())
+         else {
+            addElement(editText.text.toString())
+            deleteBtn.isVisible = true
+            checker = true
+        }
+    }
+
     fun updateElement(text: String, position: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             RepositoryRealization(globalDao).update(Modeldb(id = position, text = text))
+        }
+    }
+
+    fun deleteElement(position: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            RepositoryRealization(globalDao).delete(Modeldb(id = position))
         }
     }
 }

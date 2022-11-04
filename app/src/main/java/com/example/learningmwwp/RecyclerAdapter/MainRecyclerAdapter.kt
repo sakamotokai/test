@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.learningmwwp.R
 import com.example.learningmwwp.db.Modeldb
@@ -58,7 +60,7 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
         return elementList.count()
     }
 
-    fun getFirstId():Int{
+    fun getFirstId(): Int {
         return elementList[0].id
     }
 
@@ -69,27 +71,42 @@ class MainRecyclerAdapter : RecyclerView.Adapter<MainRecyclerAdapter.ViewHolder>
             val addBtn = dialog.findViewById<FloatingActionButton>(R.id.aboutAdd)
             val editText = dialog.findViewById<EditText>(R.id.aboutFragmentEditText)
             val deleteBtn = dialog.findViewById<FloatingActionButton>(R.id.aboutDelete)
+            val deleteDialog = BottomSheetDialog(view.itemView.context)
+            deleteDialog.setContentView(R.layout.fragment_ask_delete)
+            val deleteCancleBtn = deleteDialog.findViewById<Button>(R.id.askDeleteCancleButton)
+            val deleteDeleteBtn = deleteDialog.findViewById<Button>(R.id.askDeleteDeleteButton)
             editText!!.setText(elementList[position].text)
             addBtn!!.setOnClickListener {
-                MainScope().launch(Dispatchers.IO) {
-                    RepositoryRealization(globalDao).update(
-                        Modeldb(
-                            id = elementList[position].id,
-                            text = editText.text.toString()
+                if (editText.text.toString().isEmpty())
+                    Toast.makeText(editText.context, "Введите текст", Toast.LENGTH_SHORT).show()
+                else {
+                    MainScope().launch(Dispatchers.IO) {
+                        RepositoryRealization(globalDao).update(
+                            Modeldb(
+                                id = elementList[position].id,
+                                text = editText.text.toString()
+                            )
                         )
-                    )
+                    }
                 }
             }
             deleteBtn!!.setOnClickListener {
-                MainScope().launch(Dispatchers.IO) {
-                    RepositoryRealization(globalDao).delete(
-                        Modeldb(
-                            id = elementList[position].id,
-                            text = elementList[position].text
+                deleteDialog.show()
+                deleteDeleteBtn!!.setOnClickListener {
+                    MainScope().launch(Dispatchers.IO) {
+                        RepositoryRealization(globalDao).delete(
+                            Modeldb(
+                                id = elementList[position].id,
+                                text = elementList[position].text
+                            )
                         )
-                    )
+                    }
+                    deleteDialog.dismiss()
+                    dialog.dismiss()
                 }
-                dialog.hide()
+                deleteCancleBtn!!.setOnClickListener {
+                    deleteDialog.dismiss()
+                }
             }
             dialog.show()
         }

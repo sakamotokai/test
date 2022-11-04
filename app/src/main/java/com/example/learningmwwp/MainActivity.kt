@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import android.widget.Toolbar
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -72,14 +74,23 @@ class MainActivity : AppCompatActivity() {
         val addBtn = dialog.findViewById<FloatingActionButton>(R.id.aboutAdd)
         val editText = dialog.findViewById<EditText>(R.id.aboutFragmentEditText)
         val deleteBtn = dialog.findViewById<FloatingActionButton>(R.id.aboutDelete)
-        var buffer = editText!!.text.toString()
+        val deleteDialog = BottomSheetDialog(this)
+        deleteDialog.setContentView(R.layout.fragment_ask_delete)
+        val deleteCancleBtn = deleteDialog.findViewById<Button>(R.id.askDeleteCancleButton)
+        val deleteDeleteBtn = deleteDialog.findViewById<Button>(R.id.askDeleteDeleteButton)
         deleteBtn!!.isVisible = false
         addBtn!!.setOnClickListener {
-            if (buffer.isEmpty()) {
-                viewModel.addElement(editText.text.toString())
-                buffer = editText.text.toString()
-            } else {
-                viewModel.updateElement(editText.text.toString(), recAdapter.getFirstId())
+            viewModel.addNewNote(editText = editText!!,recAdapter,deleteBtn = deleteBtn)
+        }
+        deleteBtn.setOnClickListener {
+            deleteDialog.show()
+            deleteDeleteBtn!!.setOnClickListener {
+                viewModel.deleteElement(recAdapter.getFirstId())
+                deleteDialog.dismiss()
+            dialog.dismiss()
+            }
+            deleteCancleBtn!!.setOnClickListener {
+                deleteDialog.dismiss()
             }
         }
         dialog.show()
