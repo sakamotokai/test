@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         val deleteDeleteBtn = deleteDialog.findViewById<Button>(R.id.askDeleteDeleteButton)
         deleteBtn!!.isVisible = false
         addBtn!!.setOnClickListener {
-            viewModel.addNewNote(editText = editText!!,recAdapter,deleteBtn = deleteBtn)
+            viewModel.addNewNote(editText = editText!!, recAdapter, deleteBtn = deleteBtn)
         }
         deleteBtn.setOnClickListener {
             deleteDialog.show()

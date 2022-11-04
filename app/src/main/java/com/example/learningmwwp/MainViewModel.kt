@@ -70,22 +70,19 @@ class MainViewModel : ViewModel() {
             )
         }
     }
-    var checker = false
+
     fun addNewNote(
         editText: EditText,
         recAdapter: MainRecyclerAdapter,
         deleteBtn: FloatingActionButton
     ) {
-
-        if (editText.text.toString().isEmpty()) {
-            Toast.makeText(editText.context, "Введите текст", Toast.LENGTH_SHORT).show()
-        }
-        else if (!(editText.text.toString().isEmpty()) && checker) {
-            updateElement(editText.text.toString(), recAdapter.getFirstId())
-        }else {
-            addElement(editText.text.toString())
-            deleteBtn.isVisible = true
-            checker = true
+            if (editText.text.toString().isEmpty()) {
+                Toast.makeText(editText.context, "Введите текст", Toast.LENGTH_SHORT).show()
+            } else if (deleteBtn.isVisible) {
+                updateElement(editText.text.toString(), recAdapter.getFirstId())
+            } else {
+                addElement(editText.text.toString())
+                deleteBtn.isVisible = true
         }
     }
 
