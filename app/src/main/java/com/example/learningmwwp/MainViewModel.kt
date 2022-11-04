@@ -70,18 +70,19 @@ class MainViewModel : ViewModel() {
             )
         }
     }
-
+    var checker = false
     fun addNewNote(
         editText: EditText,
         recAdapter: MainRecyclerAdapter,
         deleteBtn: FloatingActionButton
     ) {
-        var checker = false
-        if (editText.text.toString().isEmpty())
+
+        if (editText.text.toString().isEmpty()) {
             Toast.makeText(editText.context, "Введите текст", Toast.LENGTH_SHORT).show()
-        else if (!editText.text.toString().isEmpty() && checker)
+        }
+        else if (!(editText.text.toString().isEmpty()) && checker) {
             updateElement(editText.text.toString(), recAdapter.getFirstId())
-         else {
+        }else {
             addElement(editText.text.toString())
             deleteBtn.isVisible = true
             checker = true
